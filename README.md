@@ -1,8 +1,8 @@
-# CRUD Acadêmico
+# CRUD
 
-Este é um projeto de CRUD (Create, Read, Update, Delete) que desenvolvi como uma atividade prática para a faculdade, seguindo as orientações do professor.
+Este é um projeto de CRUD (Create, Read, Update, Delete) que desenvolvi como uma atividade para a minha faculdade, seguindo as orientações da documentação que o professor passou.
 
-O objetivo do exercício foi aplicar a lógica de programação para criar um sistema funcional de cadastro de dados.
+O objetivo do exercício foi aplicar a lógica de programação para criar um sistema de cadastro de dados.
 
 ## 🛠️ Tecnologias Utilizadas
 
