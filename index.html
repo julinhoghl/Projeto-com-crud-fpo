@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro de Alunos</title>
+    <style>
+      /* ── Fonte & Reset ── */
+      @import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap");
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --verde: #00c896;
+        --verde-escuro: #009e77;
+        --amarelo: #f5c518;
+        --fundo: #0d1117;
+        --fundo-card: #161b22;
+        --borda: #30363d;
+        --texto: #e6edf3;
+        --texto-suave: #8b949e;
+        --vermelho: #f85149;
+        --azul: #58a6ff;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--fundo);
+        color: var(--texto);
+        min-height: 100vh;
+        padding: 2rem 1rem;
+      }
+
+      /* ── Cabeçalho ── */
+      header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+      header .badge {
+        display: inline-block;
+        background: var(--verde);
+        color: #000;
+        font-family: "Space Mono", monospace;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        padding: 0.25rem 0.75rem;
+        border-radius: 2rem;
+        margin-bottom: 0.75rem;
+        text-transform: uppercase;
+      }
+      header h1 {
+        font-family: "Space Mono", monospace;
+        font-size: clamp(1.6rem, 4vw, 2.4rem);
+        line-height: 1.2;
+      }
+      header h1 span {
+        color: var(--verde);
+      }
+      header p {
+        margin-top: 0.5rem;
+        color: var(--texto-suave);
+        font-size: 0.95rem;
+      }
+
+      /* ── Layout principal ── */
+      .container {
+        max-width: 860px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      /* ── Card genérico ── */
+      .card {
+        background: var(--fundo-card);
+        border: 1px solid var(--borda);
+        border-radius: 12px;
+        padding: 1.75rem;
+      }
+      .card-titulo {
+        font-family: "Space Mono", monospace;
+        font-size: 0.85rem;
+        color: var(--amarelo);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .card-titulo::before {
+        content: "";
+        width: 3px;
+        height: 1rem;
+        background: var(--amarelo);
+        border-radius: 2px;
+      }
+
+      /* ── Formulário ── */
+      .grade-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      @media (max-width: 560px) {
+        .grade-form {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+      .campo.largo {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--texto-suave);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      input,
+      select {
+        background: var(--fundo);
+        border: 1px solid var(--borda);
+        border-radius: 8px;
+        color: var(--texto);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.95rem;
+        padding: 0.6rem 0.85rem;
+        transition: border-color 0.2s;
+        outline: none;
+      }
+      input:focus,
+      select:focus {
+        border-color: var(--verde);
+        box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.15);
+      }
+      select option {
+        background: var(--fundo-card);
+      }
+
+      /* campo de id oculto */
+      #campoId {
+        display: none;
+      }
+
+      /* ── Botões ── */
+      .acoes {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+        grid-column: 1 / -1;
+      }
+
+      button {
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        padding: 0.55rem 1.25rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition:
+          opacity 0.15s,
+          transform 0.1s;
+      }
+      button:active {
+        transform: scale(0.97);
+      }
+      button:hover {
+        opacity: 0.88;
+      }
+
+      #btnSalvar {
+        background: var(--verde);
+        color: #000;
+      }
+      #btnCancelar {
+        background: transparent;
+        border: 1px solid var(--borda);
+        color: var(--texto-suave);
+        display: none;
+      }
+
+      /* ── Mensagem de feedback ── */
+      #mensagem {
+        font-size: 0.85rem;
+        font-weight: 500;
+        min-height: 1.2em;
+        color: var(--verde);
+        grid-column: 1 / -1;
+        margin-top: 0.25rem;
+      }
+      #mensagem.erro {
+        color: var(--vermelho);
+      }
+
+      /* ── Tabela ── */
+      .tabela-wrapper {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+      thead th {
+        font-family: "Space Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--texto-suave);
+        text-align: left;
+        padding: 0.6rem 1rem;
+        border-bottom: 1px solid var(--borda);
+      }
+      tbody tr {
+        border-bottom: 1px solid var(--borda);
+        transition: background 0.15s;
+      }
+      tbody tr:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      tbody td {
+        padding: 0.75rem 1rem;
+        vertical-align: middle;
+      }
+
+      /* badge de curso */
+      .tag-curso {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.2rem 0.6rem;
+        border-radius: 1rem;
+        background: rgba(88, 166, 255, 0.15);
+        color: var(--azul);
+      }
+
+      /* botões de ação na tabela */
+      .btn-editar,
+      .btn-apagar {
+        font-size: 0.78rem;
+        padding: 0.3rem 0.7rem;
+      }
+      .btn-editar {
+        background: rgba(88, 166, 255, 0.15);
+        color: var(--azul);
+        border: 1px solid rgba(88, 166, 255, 0.3);
+      }
+      .btn-apagar {
+        background: rgba(248, 81, 73, 0.1);
+        color: var(--vermelho);
+        border: 1px solid rgba(248, 81, 73, 0.25);
+      }
+
+      /* linha vazia */
+      #linhaVazia td {
+        text-align: center;
+        padding: 2rem;
+        color: var(--texto-suave);
+        font-style: italic;
+      }
+
+      /* contador */
+      .rodape-tabela {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 0.75rem;
+        font-size: 0.8rem;
+        color: var(--texto-suave);
+      }
+      #contadorAlunos {
+        font-weight: 700;
+        color: var(--verde);
+        margin-left: 0.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="badge">Desenvolvimento Web · Aula Prática</div>
+      <h1>CRUD com <span>JavaScript</span> Puro</h1>
+      <p>Cadastro de Alunos — integração HTML + arquivo externo JS</p>
+    </header>
+
+    <div class="container">
+      <!-- ════════════════════════════════════════
+         FORMULÁRIO DE CADASTRO
+    ═════════════════════════════════════════ -->
+      <div class="card">
+        <div class="card-titulo">Formulário de Cadastro</div>
+
+        <div class="grade-form">
+          <!-- id oculto usado na edição -->
+
+          <input type="hidden" id="campoId" />
+          <!-- Campo Nome -->
+          <div class="campo">
+            <label for="campoNome">Nome completo</label>
+            <input type="text" id="campoNome" placeholder="Ex.: Maria Silva" />
+          </div>
+          <!-- Campo Email -->
+          <div class="campo">
+            <label for="campoEmail">E-mail</label>
+            <input type="email" id="campoEmail" placeholder="maria@email.com" />
+          </div>
+          <!-- Campo Idade -->
+          <div class="campo">
+            <label for="campoIdade">Idade</label>
+            <input
+              type="number"
+              id="campoIdade"
+              placeholder="Ex.: 20"
+              min="1"
+              max="120"
+            />
+          </div>
+          <!-- Campo Curso -->
+          <div class="campo">
+            <label for="campoCurso">Curso</label>
+            <select id="campoCurso">
+              <option value="" selected="selected">Selecione...</option>
+              <option value="Sistemas de Informação">
+                Sistemas de Informação
+              </option>
+              <option value="Ciência da Computação">
+                Ciência da Computação
+              </option>
+              <option value="Engenharia de Software">
+                Engenharia de Software
+              </option>
+              <option value="Análise e Desenvolvimento">
+                Análise e Desenvolvimento
+              </option>
+            </select>
+          </div>
+          <!-- Botões Salvar e cancelar -->
+          <div class="acoes">
+            <button id="btnSalvar">Salvar</button>
+            <button id="btnCancelar">Cancelar</button>
+            <span id="mensagem"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════
+         TABELA DE ALUNOS CADASTRADOS
+    ═════════════════════════════════════════ -->
+      <div class="card">
+        <div class="card-titulo">Alunos Cadastrados</div>
+
+        <div class="tabela-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Idade</th>
+                <th>Curso</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="corpoTabela">
+              <!-- As linhas serão inseridas pelo JavaScript -->
+              <tr id="linhaVazia">
+                <td colspan="6">Nenhum aluno cadastrado ainda.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="rodape-tabela">
+          Total: <span id="contadorAlunos">0</span> aluno(s)
+        </div>
+      </div>
+    </div>
+    <!-- /container -->
+
+    <!--
+    ╔══════════════════════════════════════════════════════╗
+    ║  ATIVIDADE DOS ALUNOS                               ║
+    ║  Conecte o arquivo externo de JavaScript aqui.      ║
+    ║  Dica: use o atributo src na tag script.            ║
+    ╚══════════════════════════════════════════════════════╝
+  -->
+
+    <!-- TODO ➜ os alunos devem escrever a tag <script> aqui -->
+    <script src="./script.js"></script>
+  </body>
+</html>
