@@ -6,4 +6,5 @@ O objetivo do exercício foi aplicar a lógica de programação para criar um si
 
 ## 🛠️ Tecnologias Utilizadas
 
+- **HTMl e css:** Estrutura e estilo do site, (feitos pelo professor).
 - **JavaScript:** Para toda a lógica do sistema.
