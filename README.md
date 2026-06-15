@@ -6,6 +6,4 @@ O objetivo do exercício foi aplicar a lógica de programação para criar um si
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **HTML:** Para a estruturação da página.
-- **CSS:** Para a estilização do layout.
 - **JavaScript:** Para toda a lógica do sistema.
