@@ -8,3 +8,7 @@ O objetivo do exercício foi aplicar a lógica de programação para criar um si
 
 - **HTMl e css:** Estrutura e estilo do site, (feitos pelo professor).
 - **JavaScript:** Para toda a lógica do sistema.
+
+ ## Teste o Projeto
+
+-**link**: https://julinhoghl.github.io/Projeto-com-crud-fpo/
